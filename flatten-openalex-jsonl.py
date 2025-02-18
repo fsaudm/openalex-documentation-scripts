@@ -292,8 +292,11 @@ def flatten_authors():
                         author.get('display_name_alternatives'),
                         ensure_ascii=False)
                     author['last_known_institution'] = (
-                        author.get('last_known_institutions') or author.get('last_known_institution') or {}
-                        ).get('id')
+                        (author.get('last_known_institutions')[0] 
+                         if isinstance(author.get('last_known_institutions'), list) 
+                         and author.get('last_known_institutions') 
+                         else author.get('last_known_institution')) or {}
+                    ).get('id')
 
                     authors_writer.writerow(author)
 
